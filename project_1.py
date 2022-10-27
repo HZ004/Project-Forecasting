@@ -19,10 +19,10 @@ import cufflinks as cf
 import warnings
 warnings.filterwarnings("ignore")
 
-!pip install pmdarima --quiet
+#!pip install pmdarima --quiet
 import pmdarima as pm
 
-!pip install tvdatafeed --quiet
+#!pip install tvdatafeed --quiet
 from tvDatafeed import TvDatafeed ,Interval
 
 # %matplotlib inline
@@ -778,8 +778,8 @@ plt.plot(valid[['close','Predictions']])
 
 """#FB PROPHET"""
 
-!pip install pystan~=2.14 --quiet
-!pip install fbprophet --quiet
+#!pip install pystan~=2.14 --quiet
+#!pip install fbprophet --quiet
 
 import fbprophet
 from fbprophet import Prophet
