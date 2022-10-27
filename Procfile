@@ -1,1 +1,1 @@
-worker:python Project_1(3).py
+worker:python project_1.py
