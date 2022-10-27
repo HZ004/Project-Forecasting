@@ -10,4 +10,3 @@ sklearn-pandas==1.8.0
 keras==2.9.0
 Keras-Preprocessing==1.1.2
 keras-vis==0.4.1
-fbprophet==0.7.1
