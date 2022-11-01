@@ -1,5 +1,5 @@
 ephem
-pystan~=2.14
+pystan==2.19.1.1 prophet
 pandas
 numpy
 seaborn
@@ -7,5 +7,4 @@ matplotlib
 tvdatafeed
 datetime
 streamlit
-cython
-fbprophet
+scipy
