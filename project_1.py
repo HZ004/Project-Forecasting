@@ -30,7 +30,6 @@ import streamlit as st
 
 from tvDatafeed import TvDatafeed ,Interval
 
-localpip install fbprophet
 
 import fbprophet
 from fbprophet import Prophet
