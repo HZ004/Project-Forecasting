@@ -15,17 +15,17 @@ import numpy as np
 import seaborn as sns
 from datetime import datetime
 from matplotlib import pyplot as plt
-import cufflinks as cf
 import warnings
 warnings.filterwarnings("ignore")
 
-#!pip install pmdarima --quiet
-import pmdarima as pm
-
+#!pip install pystan --quiet
+#!pip install fbprophet --quiet
 #!pip install tvdatafeed --quiet
+
 from tvDatafeed import TvDatafeed ,Interval
 
-# %matplotlib inline
+import fbprophet
+from fbprophet import Prophet
 
 tv = TvDatafeed()
 data = tv.get_hist(symbol='TCS',exchange='NSE',n_bars=5000)
@@ -36,17 +36,8 @@ data['date'] = pd.to_datetime(data['date'])
 data = data.set_index('date')
 data
 
-
-"""#FB PROPHET"""
-
-#!pip install pystan~=2.14 --quiet
-#!pip install fbprophet --quiet
-
-import fbprophet
-from fbprophet import Prophet
-
 data2 = data
-data2['ds'] = pd.to_datetime(data['date'])
+data2['ds'] = pd.to_datetime(data.index)
 data2['y'] = (data2['close'])
 data2 = data2[['ds','y']].reset_index(drop = True)
 data2.info()
@@ -73,5 +64,3 @@ se = np.square(pred.loc[:, 'yhat'] - data2.y)
 mse = np.mean(se)
 rmse = np.sqrt(mse)
 rmse
-
-
