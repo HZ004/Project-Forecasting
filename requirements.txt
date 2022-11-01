@@ -8,5 +8,5 @@ tvdatafeed
 datetime
 ephem
 streamlit
-pystan==2.19.1.1 
+pystan<3
 prophet
