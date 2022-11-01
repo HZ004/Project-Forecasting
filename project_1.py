@@ -31,8 +31,8 @@ import streamlit as st
 from tvDatafeed import TvDatafeed ,Interval
 
 
-import fbprophet
-from fbprophet import Prophet
+import prophet
+from prophet import Prophet
 
 # %matplotlib inline
 
