@@ -4,6 +4,4 @@ seaborn
 matplotlib
 tvdatafeed
 datetime
-pystan
-fbprophet
 streamlit
