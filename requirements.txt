@@ -1,5 +1,5 @@
 ephem
-pystan==2.18.0.0
+pystan~=2.14
 pandas
 numpy
 seaborn
