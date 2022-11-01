@@ -1,3 +1,4 @@
+pystan
 pandas
 numpy
 seaborn
@@ -6,5 +7,4 @@ tvdatafeed
 datetime
 streamlit
 cython
-pystan
 fbprophet
