@@ -6,3 +6,4 @@ tvdatafeed
 datetime
 streamlit
 pystan
+localpip 
