@@ -1,12 +1,9 @@
 pandas
 numpy
 matplotlib
-cython
 scipy
-seaborn
 tvdatafeed
-datetime
-ephem
-streamlit
-pystan<3
-prophet
+streamlit==0.82.0
+pystan==2.19.1.1
+plotly==4.14.3
+fbprophet==0.7.1
