@@ -192,14 +192,14 @@ def model(var):
     modelplot3 = plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
 
     st.header('Model Based Forecast Result')
-	st.subheader('Heatmap')
-	st.write(modelplot0)
-	st.subheader('Monthly Boxplot')
-	st.write(modelplot1)
-	st.subheader('Yearly Boxplot')
-	st.write(modelplot2)
-	st.subheader('Basic Mathematical Model')
-	st.write(modelplot3)
+    st.subheader('Heatmap')
+    st.write(modelplot0)
+    st.subheader('Monthly Boxplot')
+    st.write(modelplot1)
+    st.subheader('Yearly Boxplot')
+    st.write(modelplot2)
+    st.subheader('Basic Mathematical Model')
+    st.write(modelplot3)
 	
 ######################################################################################
 
