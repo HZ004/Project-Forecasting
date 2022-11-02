@@ -54,8 +54,8 @@ st.write(fig)
 
 
 st.subheader('Line Chart')
-plt.figure(figsize = (20,8))
-st.write(plt.plot(data.close))
+fig2 = plt.figure(figsize = (20,8))
+st.write(fig2)
 
 ####################################################################
 
