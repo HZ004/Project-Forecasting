@@ -243,13 +243,6 @@ def datad(var):
         data1["close"].rolling(i).mean().plot(label=str(i))
     plt.legend(loc='best')
     st.pyplot(fig)
-
-    ### ACF plots and PACF plots
-    st.subheader('Auto-Correlation Plot')
-    fig = plt.figure(figsize=(20,8))
-    tsa_plots.plot_acf(data1.close,lags=350)
-    plt.show()
-    st.pyplot(fig)
 	
     ### Evaluation Metric RMSE
     def RMSE(pred,org):
