@@ -573,7 +573,7 @@ test = Test.close.values.astype('float32')
 
 # walk-forward validation
 history = [x for x in train]
-history
+
 
 predictions = list()
 
@@ -585,7 +585,7 @@ for i in range(len(test)):
     obs = test[i]
     history.append(obs)
     
-    print('>Predicted=%.3f, Expected=%.3f' % (yhat, obs))
+    #print('>Predicted=%.3f, Expected=%.3f' % (yhat, obs))
 
 # report performance
 rmse = sqrt(mean_squared_error(test, predictions))
@@ -598,10 +598,8 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
 
-data
-
 new_data=data.drop(['symbol','open','high','low','volume','date','returns percentage'],axis=1)
-new_data
+
 
 #creating train and test sets
 dataset = new_data
@@ -647,9 +645,9 @@ closing_price = scaler.inverse_transform(closing_price)
 
 # Results
 rms=np.sqrt(np.mean(np.power((valid-closing_price),2)))
-rms
 
-valid
+
+
 
 #for plotting
 lstmplot0 = plt.figure(figsize=(25,10))
@@ -660,7 +658,7 @@ plt.plot(dataset['close'], label='original')
 plt.plot(valid['Predictions'],label='predicted')
 plt.legend()
 ##########################################################################
-"""#FB PROPHET"""
+#FB PROPHET
 
 import fbprophet
 from fbprophet import Prophet
@@ -671,26 +669,21 @@ data2['y'] = (data2['close'])
 data2 = data2[['ds','y']].reset_index(drop = True)
 data2.info()
 
-data2
-
 model = Prophet()
 model.fit(data2)
-model
+
 
 future = model.make_future_dataframe(periods = 730)
-future
+
 
 pred = model.predict(future)
-pred
-
-pred[['ds','yhat','yhat_lower','yhat_upper']].head()
 
 pred.yhat[pred.yhat < 0] = 0
 pred.yhat_lower[pred.yhat_lower < 0] = 0
 pred.yhat_upper[pred.yhat_upper < 0] = 0
 pred.trend_upper[pred.trend_upper < 0] = 0
 pred.trend_lower[pred.trend_lower < 0] = 0
-pred
+
 
 fbplot0 = model.plot(pred)
 
@@ -699,7 +692,7 @@ fbplot1 = model.plot_components(pred)
 se = np.square(pred.loc[:, 'yhat'] - data2.y)
 mse = np.mean(se)
 rmse = np.sqrt(mse)
-rmse
+
 
 
 ##########################################################################
