@@ -700,22 +700,22 @@ rmse = np.sqrt(mse)
 if  MODEL == 'Model Based':
 	st.header('Model Based Forecast Result')
 	st.subheader('Heatmap')
-	st.pyplot(modelplot0)
+	st.write(modelplot0)
 	st.subheader('Monthly Boxplot')
-	st.pyplot(modelplot1)
+	st.write(modelplot1)
 	st.subheader('Yearly Boxplot')
-	st.pyplot(modelplot2)
+	st.write(modelplot2)
 	st.subheader('Basic Mathematical Model')
-	st.pyplot(modelplot3)
+	st.write(modelplot3)
 
 if MODEL == 'Data Driven':
 	st.header('Data Driven Forecast Result')
 	st.subheader('Moving Average(MA)')
-	st.pyplot(dataplot0)
+	st.write(dataplot0)
 	st.subheader('Auto-Correlation')
-	st.pyplot(dataplot1)
+	st.write(dataplot1)
 	st.subheader('Best Holt Winters Model Result')
-	st.pyplot(dataplot2)
+	st.write(dataplot2)
 
 if MODEL == 'ARIMA':
 
@@ -740,18 +740,18 @@ if MODEL == 'ARIMA':
 		st.write(print('\t%s: %.3f' %(key, value)))
 
 	st.subheader('ARIMA Forecast Plot')
-	st.pyplot(arimaplot0)
+	st.write(arimaplot0)
 
 
 if MODEL == 'LSTM Artificial Neural Network':
 	st.header('LSTM Artificial Neural Network based Forecasting')
 	st.subheader('Forecast by LSTM ANN')
-	st.pyplot(lstmplot0)
+	st.write(lstmplot0)
 	
 
 if MODEL == 'FB Prophet':
 	st.header('Forecast by FB Prophet Model')
 	st.subheader('Predicted Result')
-	st.pyplot(fbplot0)
+	st.write(fbplot0)
 	st.subheader('Other Components of FBPROPHET')
-	st.pyplot(fbplot1)
+	st.write(fbplot1)
