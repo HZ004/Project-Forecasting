@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+%matplotlib inline
 
 import pandas as pd
 import numpy as np
@@ -15,7 +15,7 @@ from tvDatafeed import TvDatafeed ,Interval
 import fbprophet
 from fbprophet import Prophet
 
-# %matplotlib inline
+
 
 st.title('Model Deployment: Forecasting')
 st.sidebar.header('Input Company symbol listed on NSE')
