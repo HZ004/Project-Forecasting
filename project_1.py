@@ -315,7 +315,7 @@ def arima(var):
     st.subheader('Determining stationarity of the dataset using Augmented Dickey-Fuller Test')
 
     result=adfuller (data['close'])
-    st.write(print('Test Statistic: %f' %result[0]))
+    print('Test Statistic: %f' %result[0])
     st.write(print('p-value: %f' %result[1]))
     st.write(print('Critical values:'))
     for key, value in result[4].items ():
@@ -324,7 +324,7 @@ def arima(var):
 	
     st.subheader('Determining stationarity of the dataset usingKwiatkowski Phillips Schmidt Shin (KPSS) test')
     result_kpss_ct=kpss(data['close'],regression="ct")
-    st.write(print('Test Statistic: %f' %result_kpss_ct[0]))
+    st.write('Test Statistic: %f' %result_kpss_ct[0])
     st.write(print('p-value: %f' %result_kpss_ct[1]))
     st.write(print('Critical values:'))
     for key, value in result_kpss_ct[3].items():
