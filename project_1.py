@@ -15,7 +15,7 @@ from tvDatafeed import TvDatafeed ,Interval
 import fbprophet
 from fbprophet import Prophet
 
-COMPANY = NIFTY
+COMPANY = NIFTY50
 
 st.title('Model Deployment: Forecasting')
 st.sidebar.header('Input Company symbol listed on NSE')
