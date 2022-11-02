@@ -41,7 +41,7 @@ fig = cf.Figure(data=[cf.Candlestick(x=data.index,
 			       low = data['low'],
 			       close = data['close'])])
 fig.update_layout(xaxis_rangeslider_visible=False)
-st.write(fig)
+st.plotly_chart(fig, use_container_width = True)
 
 
 st.subheader('Line Chart')
