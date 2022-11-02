@@ -180,7 +180,7 @@ data1['log_close'] = np.log(data1.close)
 data2 = pd.get_dummies(data1['month'])
 data1 = pd.concat([data1, data2],axis=1)
 data1 = data1.reset_index(drop = True)
-data1
+
 
 # Using 3/4th data for training and remaining for testing
 test_size = round(0.25 * (data1.shape[0]+1))
@@ -189,7 +189,7 @@ Train = data1[:-test_size]
 Test = data1[-test_size:]
 
 
-"""### Trying basic models"""
+## Trying basic models"""
 
 #Linear Model
 import statsmodels.formula.api as smf 
@@ -268,7 +268,7 @@ if bestmodel == "rmse_Mult_add_sea":
 model_full = smf.ols(formula,data=data1).fit()
 
 pred_new  = pd.Series(model_full.predict(data1))
-pred_new
+
 
 if bestmodel == ("rmse_Exp" or "rmse_Mult_sea" or "rmse_Mult_add_sea"):
   data1["forecasted_close"] = pd.Series(np.exp(pred_new))
@@ -279,7 +279,7 @@ plt.figure(figsize = (20,8))
 modelplot3 = plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
 
 ################################################################################
-"""# Forecasting - Data Driven"""
+# Forecasting - Data Driven
 
 import statsmodels.graphics.tsaplots as tsa_plots
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -287,7 +287,7 @@ from statsmodels.tsa.holtwinters import SimpleExpSmoothing # SES
 from statsmodels.tsa.holtwinters import Holt # Holts Exponential Smoothing
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 
-"""#### Moving Average """
+#### Moving Average
 
 x=20
 
@@ -303,68 +303,62 @@ for i in range(50,201,50):
 plt.legend(loc='best')
 
 dataplot0 = fig
-"""#### Time series decomposition plot 
-
-"""
+#### Time series decomposition plot 
 
 decompose_ts_add = seasonal_decompose(data1['close'], period = 365)
 decompose_ts_add.plot()
 
 plt.show()
 
-"""#### ACF plots and PACF plots
-
-"""
+#### ACF plots and PACF plots
 
 dataplot1 = tsa_plots.plot_acf(data1.close,lags=350)
 tsa_plots.plot_pacf(data1.close,lags=350)
 plt.show()
 
-"""### Evaluation Metric RMSE"""
+### Evaluation Metric RMSE
 
 def RMSE(pred,org):
   MSE = np.square(np.subtract(org,pred)).mean()   
   return np.sqrt(MSE)
 
-"""### Simple Exponential Method
+### Simple Exponential Method
 
-"""
+
 
 ses_model = SimpleExpSmoothing(Train["close"]).fit(smoothing_level=0.2)
 pred_ses = ses_model.predict(start = Test.index[0],end = Test.index[-1])
 rmseses = RMSE(pred_ses,Test.close)
 
-"""### Holt method """
+### Holt method
 
 # Holt method 
 hw_model = Holt(Train["close"]).fit(smoothing_level=0.8, smoothing_slope=0.2)
 pred_hw = hw_model.predict(start = Test.index[0],end = Test.index[-1])
 rmsehw = RMSE(pred_hw,Test.close)
 
-"""### Holts winter exponential smoothing with additive seasonality and additive trend
-
-"""
+### Holts winter exponential smoothing with additive seasonality and additive trend
 
 hwe_model_add_add = ExponentialSmoothing(Train["close"],seasonal="add",trend="add",seasonal_periods=365).fit() #add the trend to the model
 pred_hwe_add_add = hwe_model_add_add.predict(start = Test.index[0],end = Test.index[-1])
 rmsehwaa = RMSE(pred_hwe_add_add,Test.close)
 
-"""### Holts winter exponential smoothing with multiplicative seasonality and additive trend"""
+### Holts winter exponential smoothing with multiplicative seasonality and additive trend
 
 hwe_model_mul_add = ExponentialSmoothing(Train["close"],seasonal="mul",trend="add",seasonal_periods=365).fit() 
 pred_hwe_mul_add = hwe_model_mul_add.predict(start = Test.index[0],end = Test.index[-1])
 rmsehwma = RMSE(pred_hwe_mul_add,Test.close)
 
-"""### Final Model by combining train and test"""
+### Final Model by combining train and test
 
 #Compare the results 
 datamodel1 = {"MODEL":pd.Series(["rmse_ses","rmse_hw","rmse_hwe_add_add","rmse_hwe_mul_add"]),"RMSE_Values":pd.Series([rmseses,rmsehw,rmsehwaa,rmsehwma])}
 table_rmse1 = pd.DataFrame(datamodel1)
 table1 = table_rmse1.sort_values(['RMSE_Values'],ignore_index = True)
-table1
+
 
 bestmodel1 = table1.iloc[0,0]
-bestmodel1
+
 
 if bestmodel1 == "rmse_hwe_add_add" :
   formula1 = ExponentialSmoothing(data["close"],seasonal="add",trend="add",seasonal_periods=365).fit()
@@ -386,12 +380,10 @@ plt.plot(data1.close, label = "Actual")
 plt.plot(forecasted, label = "Forecasted")
 plt.legend()
 #########################################################################
-"""# Forecasting using ARIMA,SARIMA and SARIMAX model
+# Forecasting using ARIMA,SARIMA and SARIMAX model
 
 ### Checking if the data is stationary or not
-"""
 
-timeseriesdf
 
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.stattools import kpss
@@ -406,7 +398,7 @@ plt.tick_params(
     labelbottom=False) 
 plt.show()
 
-"""### Augmented Dickey-Fuller Test"""
+### Augmented Dickey-Fuller Test
 
 result=adfuller (timeseriesdf['close'])
 print('Test Statistic: %f' %result[0])
@@ -415,7 +407,7 @@ print('Critical values:')
 for key, value in result[4].items ():
      print('\t%s: %.3f' %(key, value))
 
-"""### Kwiatkowski Phillips Schmidt Shin (KPSS) test"""
+### Kwiatkowski Phillips Schmidt Shin (KPSS) test
 
 result_kpss_ct=kpss(timeseriesdf['close'],regression="ct")
 print('Test Statistic: %f' %result_kpss_ct[0])
@@ -426,24 +418,6 @@ for key, value in result_kpss_ct[3].items():
 
 ## Test Statistic in both Tests is greater than standard 0.05
 ## Hence the data can be classified as not Stationary
-
-"""#### Trying to make data stationary"""
-
-''' 
-Steps that can be used to make data stationary
-    Log transforming of the data
-    Taking the square root of the data
-    Taking the cube root
-    Proportional change
-
-    The steps for transformation are simple, this project uses square root transformation.
-
-    Use NumPy’s square root function to transform the required column
-    Then shift the transformation by one using the “shift’ function.
-    Take the difference between both the original transformation and shift.
-    Steps 2 and 3 can be done by just using the pandas “diff” function.
-    
-'''
 #Transforming of the data
 
 df_log=np.sqrt(timeseriesdf['close'])
@@ -462,7 +436,6 @@ print('Critical values:')
 for key, value in result_kpss_ct_log[3].items():
      print('\t%s: %.3f' %(key, value))
 
-df_diff
 
 fig=plt.figure(figsize=(20,8))
 sns.lineplot(data=df_diff)
@@ -488,7 +461,6 @@ plt.tick_params(
 plt.legend()
 plt.show()
 
-df_diff
 
 stationarydf1 = df_diff
 
@@ -526,7 +498,6 @@ plt.tick_params(
 plt.legend()
 plt.show()
 
-diff_v2ex
 
 stationarydf2 = diff_v2ex
 
@@ -591,7 +562,7 @@ def forecast(ARIMA_model, periods=730):
 
 arimaplot0 = forecast(ARIMA_model)
 #########################################################################
-"""# Naive Predictions / Persistence / Base model"""
+# Naive Predictions / Persistence / Base model
 
 # evaluate a persistence model
 print('Dataset %d, Validation %d' % (len(Train), len(Test)))
@@ -620,7 +591,7 @@ for i in range(len(test)):
 rmse = sqrt(mean_squared_error(test, predictions))
 print('RMSE: %.3f' % rmse)
 ###########################################################################
-"""#LSTM ANN"""
+#LSTM ANN
 
 #importing required libraries
 from sklearn.preprocessing import MinMaxScaler
