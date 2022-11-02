@@ -312,14 +312,14 @@ def arima(var):
     from statsmodels.tsa.stattools import kpss
 	
     st.header('Auto ARIMA Forecast Result')
-    st.write('Determining stationarity of the dataset using Augmented Dickey-Fuller Test')
+    st.write('**Determining stationarity of the dataset using Augmented Dickey-Fuller Test**')
 
     result=adfuller (data['close'])
     st.text('Test Statistic: %f' %result[0])
     st.text('p-value: %f' %result[1])
 
 	
-    st.write('Determining stationarity of the dataset using Kwiatkowski Phillips Schmidt Shin (KPSS) test')
+    st.write('**Determining stationarity of the dataset using Kwiatkowski Phillips Schmidt Shin (KPSS) test**')
     result_kpss_ct=kpss(data['close'],regression="ct")
     st.text('Test Statistic: %f' %result_kpss_ct[0])
     st.text('p-value: %f' %result_kpss_ct[1])
