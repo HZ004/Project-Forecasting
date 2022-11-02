@@ -857,7 +857,7 @@ if  MODEL == 'Model Based':
 	a,b,c,d = model(COMPANY)
 	st.header('Model Based Forecast Result')
 	st.subheader('Heatmap')
-	st.write(a)
+	print(a)
 	st.subheader('Monthly Boxplot')
 	st.write(b)
 	st.subheader('Yearly Boxplot')
