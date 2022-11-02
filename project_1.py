@@ -59,8 +59,7 @@ st.write(fig2)
 
 ####################################################################
 
-#### Box and Whisker Plots by Interval
-"""
+
 
 # create a boxplot of yearly data
 databoxplot = data
