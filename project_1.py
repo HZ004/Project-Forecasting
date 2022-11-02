@@ -197,6 +197,112 @@ def model(var):
 	
 ######################################################################################
 
+def datad(var):
+    tv = TvDatafeed()
+    data = tv.get_hist(symbol=var,exchange='NSE',n_bars=5000)
+    data['date'] = data.index.astype(str)
+    new = data['date'].str.split(' ',expand=True)
+    data['date'] = new[0]
+    data['date'] = pd.to_datetime(data['date'])
+    data = data.set_index('date',drop=False)
+    
+    import statsmodels.graphics.tsaplots as tsa_plots
+    from statsmodels.tsa.seasonal import seasonal_decompose
+    from statsmodels.tsa.holtwinters import SimpleExpSmoothing # SES
+    from statsmodels.tsa.holtwinters import Holt # Holts Exponential Smoothing
+    from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
+    heatmapdata = data[['date','close']]
+
+    heatmapdata['date'] = pd.to_datetime(heatmapdata['date']) 
+    # Extracting Day, weekday name, month name, year from the Date column using Date functions from pandas 
+    heatmapdata["month"] = heatmapdata['date'].dt.strftime("%b") # month extraction
+    heatmapdata["year"] = heatmapdata['date'].dt.strftime("%Y") # year extraction
+    heatmapdata["Day"] = heatmapdata['date'].dt.strftime("%d") # Day extraction
+    heatmapdata["wkday"] = heatmapdata['date'].dt.strftime("%A") # weekday extraction
+
+    data1 = heatmapdata
+
+    data1['t'] = np.arange(1,data1.shape[0]+1)
+    data1['t_square'] = np.square(data1.t)
+    data1['log_close'] = np.log(data1.close)
+    data2 = pd.get_dummies(data1['month'])
+    data1 = pd.concat([data1, data2],axis=1)
+    data1 = data1.reset_index(drop = True)
+
+    # Using 3/4th data for training and remaining for testing
+    test_size = round(0.25 * (data1.shape[0]+1))
+    Train = data1[:-test_size]
+    Test = data1[-test_size:]
+
+    st.header('Data Driven Forecast Result')
+    st.subheader('Moving Average(MA)')
+    fig = plt.figure(figsize=(20,8))
+    data1['close'].plot(label="org")
+    for i in range(50,201,50):
+        data1["close"].rolling(i).mean().plot(label=str(i))
+    plt.legend(loc='best')
+    st.pyplot(fig)
+
+    ### ACF plots and PACF plots
+    st.subheader('Auto-Correlation Plot')
+    fig = plt.figure(figsize=(20,8))
+    tsa_plots.plot_acf(data1.close,lags=350)
+    plt.show()
+    st.pyplot(fig)
+	
+    ### Evaluation Metric RMSE
+    def RMSE(pred,org):
+        MSE = np.square(np.subtract(org,pred)).mean()   
+        return np.sqrt(MSE)
+
+    ### Simple Exponential Method
+    ses_model = SimpleExpSmoothing(Train["close"]).fit(smoothing_level=0.2)
+    pred_ses = ses_model.predict(start = Test.index[0],end = Test.index[-1])
+    rmseses = RMSE(pred_ses,Test.close)
+    
+    ### Holt method
+    hw_model = Holt(Train["close"]).fit(smoothing_level=0.8, smoothing_slope=0.2)
+    pred_hw = hw_model.predict(start = Test.index[0],end = Test.index[-1])
+    rmsehw = RMSE(pred_hw,Test.close)
+
+    ### Holts winter exponential smoothing with additive seasonality and additive trend
+    hwe_model_add_add = ExponentialSmoothing(Train["close"],seasonal="add",trend="add",seasonal_periods=365).fit() #add the trend to the model
+    pred_hwe_add_add = hwe_model_add_add.predict(start = Test.index[0],end = Test.index[-1])
+    rmsehwaa = RMSE(pred_hwe_add_add,Test.close)
+
+    ### Holts winter exponential smoothing with multiplicative seasonality and additive trend
+    hwe_model_mul_add = ExponentialSmoothing(Train["close"],seasonal="mul",trend="add",seasonal_periods=365).fit() 
+    pred_hwe_mul_add = hwe_model_mul_add.predict(start = Test.index[0],end = Test.index[-1])
+    rmsehwma = RMSE(pred_hwe_mul_add,Test.close)
+
+    ### Final Model by combining train and test
+    datamodel1 = {"MODEL":pd.Series(["rmse_ses","rmse_hw","rmse_hwe_add_add","rmse_hwe_mul_add"]),"RMSE_Values":pd.Series([rmseses,rmsehw,rmsehwaa,rmsehwma])}
+
+    table_rmse1 = pd.DataFrame(datamodel1)
+
+    table1 = table_rmse1.sort_values(['RMSE_Values'],ignore_index = True)
+
+    bestmodel1 = table1.iloc[0,0]
+
+    if bestmodel1 == "rmse_hwe_add_add" :
+        formula1 = ExponentialSmoothing(data["close"],seasonal="add",trend="add",seasonal_periods=365).fit()
+    if bestmodel1 == "rmse_hwe_mul_add":
+        formula1 = ExponentialSmoothing(data["close"],seasonal="mul",trend="add",seasonal_periods=365).fit()
+    if bestmodel1 == "rmse_ses" :
+        formula1 = SimpleExpSmoothing(data["close"]).fit(smoothing_level=0.2)
+    if bestmodel1 == "rmse_hw":
+        formula1 = Holt(data["close"]).fit(smoothing_level=0.8, smoothing_slope=0.2)
+    
+    #Forecasting for next 12 time periods
+    forecasted = formula1.forecast(730)
+
+    st.subheader('Best Holt Winters Model')
+    fig = plt.figure(figsize=(20,8))
+    plt.plot(data1.close, label = "Actual")
+    plt.plot(forecasted, label = "Forecasted")
+    plt.legend()
+    st.pyplot(fig)
 
 '''
 def datad():
@@ -855,16 +961,10 @@ rmse = np.sqrt(mse)
 if  MODEL == 'Model Based':
 	model(COMPANY)
 	
-'''
-if MODEL == 'Data Driven':
-	st.header('Data Driven Forecast Result')
-	st.subheader('Moving Average(MA)')
-	st.write(dataplot0)
-	st.subheader('Auto-Correlation')
-	st.write(dataplot1)
-	st.subheader('Best Holt Winters Model Result')
-	st.write(dataplot2)
 
+if MODEL == 'Data Driven':
+	datad(COMPANY)
+'''
 if MODEL == 'ARIMA':
 
 	st.header('Auto ARIMA Forecast Result')
