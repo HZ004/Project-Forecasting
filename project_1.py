@@ -18,13 +18,10 @@ from fbprophet import Prophet
 # %matplotlib inline
 
 st.title('Model Deployment: Forecasting')
-
 st.sidebar.header('Input Company symbol listed on NSE')
-
 
 COMPANY = st.sidebar.text_input("Insert Company name in Upper cases")
 MODEL = st.sidebar.selectbox('Forecasting Model',('Model Based','Data Driven','ARIMA','LSTM Artificial Neural Network','FB Prophet'))
-
 
 tv = TvDatafeed()
 data = tv.get_hist(symbol=COMPANY,exchange='NSE',n_bars=5000)
@@ -35,12 +32,9 @@ data['date'] = pd.to_datetime(data['date'])
 data = data.set_index('date')
 
 timeseriesdf = data[['close']]
-
 timeseriessq = data['close']
 
-
 st.subheader('Candlestick Chart')
-
 
 plt.figure(figsize=(20,8))
 fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
@@ -57,6 +51,169 @@ fig2 = plt.figure(figsize = (20,8))
 plt.plot(data.close)
 st.write(fig2)
 
+##################################################################################
+def model(var):
+    tv = TvDatafeed()
+    data = tv.get_hist(symbol=var,exchange='NSE',n_bars=5000)
+    data['date'] = data.index.astype(str)
+    new = data['date'].str.split(' ',expand=True)
+    data['date'] = new[0]
+    data['date'] = pd.to_datetime(data['date'])
+    data = data.set_index('date',drop=False)
+    
+    heatmapdata = data[['date','close']]
+    heatmapdata['date'] = pd.to_datetime(heatmapdata['date']) 
+	# Extracting Day, weekday name, month name, year from the Date column using 
+	# Date functions from pandas 
+    heatmapdata["month"] = heatmapdata['date'].dt.strftime("%b") # month extraction
+    heatmapdata["year"] = heatmapdata['date'].dt.strftime("%Y") # year extraction
+    heatmapdata["Day"] = heatmapdata['date'].dt.strftime("%d") # Day extraction
+    heatmapdata["wkday"] = heatmapdata['date'].dt.strftime("%A") # weekday extraction
+
+    heatmap_y_month = pd.pivot_table(data = heatmapdata,
+                        values = "close",
+                        index = "year",
+                        columns = "month",
+                        aggfunc = "mean",
+                        fill_value=0)
+    heatmap_y_month1 = heatmap_y_month[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']]
+
+
+    plt.figure(figsize=(20,10))
+    modelplot0 = sns.heatmap(heatmap_y_month1,
+            annot=True,
+            fmt="g",
+            cmap = 'YlOrBr')
+    #st.write(modelplot0)
+
+    # Boxplot for every
+    plt.figure(figsize=(20,10))
+    modelplot1 = sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
+    #st.write(modelplot1)
+
+    plt.figure(figsize=(20,10))
+    modelplot2 = sns.boxplot(x="year",y="close",data=heatmapdata)
+    #st.write(modelplot2)
+
+    sns.lineplot(x="year",y="close",data=heatmapdata)
+
+    #### Splitting data
+    data1 = heatmapdata
+
+    data1['t'] = np.arange(1,data1.shape[0]+1)
+    data1['t_square'] = np.square(data1.t)
+    data1['log_close'] = np.log(data1.close)
+    data2 = pd.get_dummies(data1['month'])
+    data1 = pd.concat([data1, data2],axis=1)
+    data1 = data1.reset_index(drop = True)
+    
+    # Using 3/4th data for training and remaining for testing
+    test_size = round(0.25 * (data1.shape[0]+1))
+
+    Train = data1[:-test_size]
+    Test = data1[-test_size:]
+    
+    ## Trying basic models
+
+    #Linear Model
+    import statsmodels.formula.api as smf 
+
+    linear_model = smf.ols('close~t',data=Train).fit()
+    pred_linear =  pd.Series(linear_model.predict(pd.DataFrame(Test['t'])))
+    rmse_linear = np.sqrt(np.mean((np.array(Test['close'])-np.array(pred_linear))**2))
+
+    #Exponential
+    Exp = smf.ols('log_close~t',data=Train).fit()
+    pred_Exp = pd.Series(Exp.predict(pd.DataFrame(Test['t'])))
+    rmse_Exp = np.sqrt(np.mean((np.array(Test['close'])-np.array(np.exp(pred_Exp)))**2))
+
+    #Quadratic 
+    Quad = smf.ols('close~t+t_square',data=Train).fit()
+    pred_Quad = pd.Series(Quad.predict(Test[["t","t_square"]]))
+    rmse_Quad = np.sqrt(np.mean((np.array(Test['close'])-np.array(pred_Quad))**2))
+
+    #Additive seasonality 
+    add_sea = smf.ols('close~Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov',data=Train).fit()
+    pred_add_sea = pd.Series(add_sea.predict(Test[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov']]))
+    rmse_add_sea = np.sqrt(np.mean((np.array(Test['close'])-np.array(pred_add_sea))**2))
+
+    #Additive Seasonality Quadratic 
+    add_sea_Quad = smf.ols('close~t+t_square+Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov',data=Train).fit()
+    pred_add_sea_quad = pd.Series(add_sea_Quad.predict(Test[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','t','t_square']]))
+    rmse_add_sea_quad = np.sqrt(np.mean((np.array(Test['close'])-np.array(pred_add_sea_quad))**2))
+
+    ##Multiplicative Seasonality
+    Mul_sea = smf.ols('log_close~Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov',data = Train).fit()
+    pred_Mult_sea = pd.Series(Mul_sea.predict(Test))
+    rmse_Mult_sea = np.sqrt(np.mean((np.array(Test['close'])-np.array(np.exp(pred_Mult_sea)))**2))
+
+    #Multiplicative Additive Seasonality 
+    Mul_Add_sea = smf.ols('log_close~t+Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov',data = Train).fit()
+    pred_Mult_add_sea = pd.Series(Mul_Add_sea.predict(Test))
+    rmse_Mult_add_sea = np.sqrt(np.mean((np.array(Test['close'])-np.array(np.exp(pred_Mult_add_sea)))**2))
+
+    #Compare the results 
+    datamodel = {"MODEL":pd.Series(["rmse_linear","rmse_Exp","rmse_Quad","rmse_add_sea","rmse_add_sea_quad","rmse_Mult_sea","rmse_Mult_add_sea"]),
+            "RMSE_Values":pd.Series([rmse_linear,rmse_Exp,rmse_Quad,rmse_add_sea,rmse_add_sea_quad,rmse_Mult_sea,rmse_Mult_add_sea])}
+    table_rmse=pd.DataFrame(datamodel)
+    table = table_rmse.sort_values(['RMSE_Values'],ignore_index = True)
+
+    bestmodel = table.iloc[0,0]
+
+    if bestmodel == "rmse_linear" :
+        formula = 'close~t'
+
+    if bestmodel == "rmse_Exp":
+        formula = 'log_close~t'
+
+    if bestmodel == "rmse_Quad" :
+        formula = 'close~t+t_square'
+
+    if bestmodel == "rmse_add_sea":
+        formula = 'close~Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov'
+
+    if bestmodel == "rmse_add_sea_quad":
+        formula = 'close~t+t_square+Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov'
+
+    if bestmodel == "rmse_Mult_sea":
+        formula = 'log_close~Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov'
+
+    if bestmodel == "rmse_Mult_add_sea":
+        formula = 'log_close~t+Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov'
+
+
+    #Build the model on entire data set
+    model_full = smf.ols(formula,data=data1).fit()
+    pred_new  = pd.Series(model_full.predict(data1))
+
+    if bestmodel == ("rmse_Exp" or "rmse_Mult_sea" or "rmse_Mult_add_sea"):
+        data1["forecasted_close"] = pd.Series(np.exp(pred_new))
+    else:
+        data1["forecasted_close"] = pd.Series((pred_new))
+
+    plt.figure(figsize = (20,8))
+    modelplot3 = plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
+    #st.write(modelplot3)
+
+    return modelplot0,modelplot1,modelplot2,modelplot3
+######################################################################################
+
+
+'''
+def datad():
+	
+
+
+def arima():
+	
+
+
+def lstm():
+	
+
+
+def fb():
+	
 ####################################################################
 
 
@@ -583,8 +740,7 @@ for i in range(len(test)):
     
     # observation
     obs = test[i]
-    history.append(obs)
-    
+    history.append(obs)    
     #print('>Predicted=%.3f, Expected=%.3f' % (yhat, obs))
 
 # report performance
@@ -692,22 +848,23 @@ fbplot1 = model.plot_components(pred)
 se = np.square(pred.loc[:, 'yhat'] - data2.y)
 mse = np.mean(se)
 rmse = np.sqrt(mse)
-
+'''
 
 
 ##########################################################################
 
 if  MODEL == 'Model Based':
+	a,b,c,d = model(COMPANY)
 	st.header('Model Based Forecast Result')
 	st.subheader('Heatmap')
-	modelplot0
+	st.write(a)
 	st.subheader('Monthly Boxplot')
-	modelplot1
+	st.write(b)
 	st.subheader('Yearly Boxplot')
-	modelplot2
+	st.write(c)
 	st.subheader('Basic Mathematical Model')
-	modelplot3
-
+	st.write(d)
+'''
 if MODEL == 'Data Driven':
 	st.header('Data Driven Forecast Result')
 	st.subheader('Moving Average(MA)')
@@ -755,3 +912,4 @@ if MODEL == 'FB Prophet':
 	st.write(fbplot0)
 	st.subheader('Other Components of FBPROPHET')
 	st.write(fbplot1)
+'''
