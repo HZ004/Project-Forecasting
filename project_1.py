@@ -39,7 +39,6 @@ timeseriesdf = data[['close']]
 timeseriessq = data['close']
 
 
-"""# Visualisation"""
 st.subheader('Candlestick Chart')
 
 
@@ -62,7 +61,6 @@ st.write(fig2)
 
 
 
-# create a boxplot of yearly data
 databoxplot = data
 databoxplot['date'] = databoxplot.index.astype(str)
 new = databoxplot['date'].str.split(' ',expand=True)
@@ -78,7 +76,6 @@ years = pd.pivot_table(databoxplot,index = 'date1', values = 'close',columns='ye
 plt.figure(figsize = (20,8))
 years.boxplot()
 
-#### Lag plot
 
 # create a scatter plot
 plt.figure(figsize = (20,8))
@@ -106,45 +103,31 @@ plt.boxplot(x,vert=False)
 
 datac = datac[datac['returns percentage'] < 5]
 datac = datac[datac['returns percentage'] > -5]
-datac
 
-"""# Sampling and Transformation"""
+
 
 timeseriesdf = data[['close']]
 timeseriessq = data['close']
-timeseriessq
 
-"""#### Upsampling Data"""
+
 
 upsampled = timeseriessq.resample('H').mean()
-upsampled.head(25)
 
-upsampled.shape
-
-"""#### Interpolate the missing value"""
 
 interpolated = upsampled.interpolate(method='linear')
-interpolated.head(25)
 
-
-
-#### Downsampling Data"""
 
 # downsample to quarterly intervals
 resample = timeseriessq.resample('Q')
 downsampled = resample.mean()
 
-downsampled.head()
 
 plt.rc("figure", figsize=(20,8))
 downsampled.plot()
 
-"""#### Tranformations"""
 
 # load and plot a time series
-timeseriesdf
 
-"""#### Square Root Transform"""
 
 dataframe = pd.DataFrame(np.sqrt(timeseriesdf.values), columns = ['close'])
 dataframe
