@@ -55,6 +55,7 @@ st.write(fig)
 
 st.subheader('Line Chart')
 fig2 = plt.figure(figsize = (20,8))
+plt.plot(data.close)
 st.write(fig2)
 
 ####################################################################
@@ -69,16 +70,15 @@ databoxplot['date'] = new[0]
 databoxplot = databoxplot[['date','close']]
 databoxplot['year'] = databoxplot['date'].str[:4].astype(int)
 databoxplot['date1'] = databoxplot['date'].str[5:]
-databoxplot
 
-databoxplot.info()
+
 
 years = pd.pivot_table(databoxplot,index = 'date1', values = 'close',columns='year', aggfunc = sum)
 
 plt.figure(figsize = (20,8))
 years.boxplot()
 
-"""#### Lag plot"""
+#### Lag plot
 
 # create a scatter plot
 plt.figure(figsize = (20,8))
