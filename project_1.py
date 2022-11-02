@@ -122,26 +122,20 @@ resample = timeseriessq.resample('Q')
 downsampled = resample.mean()
 
 
-plt.rc("figure", figsize=(20,8))
-downsampled.plot()
-
 
 # load and plot a time series
 
 
 dataframe = pd.DataFrame(np.sqrt(timeseriesdf.values), columns = ['close'])
-dataframe
 
-"""#### Log Transform"""
 
 dataframe = pd.DataFrame(np.log(timeseriesdf.values), columns = ['close'])
-dataframe
 
-"""# Forecasting - Model Based"""
+# Forecasting - Model Based"""
 
 heatmapdata = data[['date','close']]
 heatmapdata['date'] = pd.to_datetime(heatmapdata['date'])
-heatmapdata
+
 
 # Extracting Day, weekday name, month name, year from the Date column using 
 # Date functions from pandas 
@@ -151,8 +145,6 @@ heatmapdata["year"] = heatmapdata['date'].dt.strftime("%Y") # year extraction
 heatmapdata["Day"] = heatmapdata['date'].dt.strftime("%d") # Day extraction
 heatmapdata["wkday"] = heatmapdata['date'].dt.strftime("%A") # weekday extraction
 
-heatmapdata
-
 heatmap_y_month = pd.pivot_table(data = heatmapdata,
                                  values = "close",
                                  index = "year",
@@ -160,7 +152,7 @@ heatmap_y_month = pd.pivot_table(data = heatmapdata,
                                  aggfunc = "mean",
                                  fill_value=0)
 heatmap_y_month1 = heatmap_y_month[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']]
-heatmap_y_month1
+
 
 plt.figure(figsize=(20,10))
 modelplot0 = sns.heatmap(heatmap_y_month1,
@@ -177,10 +169,10 @@ modelplot2 = sns.boxplot(x="year",y="close",data=heatmapdata)
 
 sns.lineplot(x="year",y="close",data=heatmapdata)
 
-"""#### Splitting data"""
+#### Splitting data"""
 
 data1 = heatmapdata
-data1
+
 
 data1['t'] = np.arange(1,data1.shape[0]+1)
 data1['t_square'] = np.square(data1.t)
