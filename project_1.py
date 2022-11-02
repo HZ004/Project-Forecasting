@@ -84,16 +84,13 @@ def model(var):
             annot=True,
             fmt="g",
             cmap = 'YlOrBr')
-    #st.write(modelplot0)
 
     # Boxplot for every
     plt.figure(figsize=(20,10))
     modelplot1 = sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
-    #st.write(modelplot1)
 
     plt.figure(figsize=(20,10))
     modelplot2 = sns.boxplot(x="year",y="close",data=heatmapdata)
-    #st.write(modelplot2)
 
     sns.lineplot(x="year",y="close",data=heatmapdata)
 
@@ -193,9 +190,17 @@ def model(var):
 
     plt.figure(figsize = (20,8))
     modelplot3 = plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
-    #st.write(modelplot3)
 
-    return modelplot0,modelplot1,modelplot2,modelplot3
+    st.header('Model Based Forecast Result')
+	st.subheader('Heatmap')
+	st.write(modelplot0)
+	st.subheader('Monthly Boxplot')
+	st.write(modelplot1)
+	st.subheader('Yearly Boxplot')
+	st.write(modelplot2)
+	st.subheader('Basic Mathematical Model')
+	st.write(modelplot3)
+	
 ######################################################################################
 
 
@@ -854,16 +859,8 @@ rmse = np.sqrt(mse)
 ##########################################################################
 
 if  MODEL == 'Model Based':
-	a,b,c,d = model(COMPANY)
-	st.header('Model Based Forecast Result')
-	st.subheader('Heatmap')
-	print(a)
-	st.subheader('Monthly Boxplot')
-	st.write(b)
-	st.subheader('Yearly Boxplot')
-	st.write(c)
-	st.subheader('Basic Mathematical Model')
-	st.write(d)
+	model(COMPANY)
+	
 '''
 if MODEL == 'Data Driven':
 	st.header('Data Driven Forecast Result')
