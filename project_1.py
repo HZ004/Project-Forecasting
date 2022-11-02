@@ -35,9 +35,7 @@ timeseriesdf = data[['close']]
 timeseriessq = data['close']
 
 st.subheader('Candlestick Chart')
-
-fig = plt.figure(figsize=(20,8))
-cf.Figure(data=[cf.Candlestick(x=data.index, 
+fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
 			       open=data['open'],
 			       high = data['high'],
 			       low = data['low'],
