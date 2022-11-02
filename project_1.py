@@ -315,20 +315,22 @@ def arima(var):
     st.subheader('Determining stationarity of the dataset using Augmented Dickey-Fuller Test')
 
     result=adfuller (data['close'])
-    print('Test Statistic: %f' %result[0])
-    st.write(print('p-value: %f' %result[1]))
-    st.write(print('Critical values:'))
+    st.write('Test Statistic: %f' %result[0])
+    st.write('p-value: %f' %result[1])
+    st.write('Critical values:')
     for key, value in result[4].items ():
-        st.write(print('\t%s: %.3f' %(key, value)))
+        st.write('\t%s: %.3f' %(key, value))
 
 	
-    st.subheader('Determining stationarity of the dataset usingKwiatkowski Phillips Schmidt Shin (KPSS) test')
+    st.subheader('Determining stationarity of the dataset using Kwiatkowski Phillips Schmidt Shin (KPSS) test')
     result_kpss_ct=kpss(data['close'],regression="ct")
     st.write('Test Statistic: %f' %result_kpss_ct[0])
-    st.write(print('p-value: %f' %result_kpss_ct[1]))
-    st.write(print('Critical values:'))
+    st.write('p-value: %f' %result_kpss_ct[1])
+    st.write('Critical values:')
     for key, value in result_kpss_ct[3].items():
-        st.write(print('\t%s: %.3f' %(key, value)))
+        st.write('\t%s: %.3f' %(key, value))
+
+    st.write('**_Test statistic value greater than 0.05 for both ADFuller and KPSS indicate non-stationarity of the data_**')
 
     # Auto ARIMA on complete Dataset
     import itertools
