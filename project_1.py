@@ -36,12 +36,12 @@ timeseriessq = data['close']
 
 st.subheader('Candlestick Chart')
 
-plt.figure(figsize=(20,8))
-fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
-                open=data['open'],
-                high = data['high'],
-                low = data['low'],
-                close = data['close'])])
+fig = plt.figure(figsize=(20,8))
+cf.Figure(data=[cf.Candlestick(x=data.index, 
+			       open=data['open'],
+			       high = data['high'],
+			       low = data['low'],
+			       close = data['close'])])
 fig.update_layout(xaxis_rangeslider_visible=False)
 st.write(fig)
 
@@ -84,11 +84,13 @@ def model(var):
     sns.heatmap(heatmap_y_month1,annot=True,fmt="g",cmap = 'YlOrBr')
     st.pyplot(fig)
 
-    # Boxplot for every
+    # Boxplot for every month
+    st.subheader('Monthly Boxplot')
     fig = plt.figure(figsize=(20,10))
     sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
     st.pyplot(fig)
 
+    st.subheader('Yearly Boxplot')
     fig = plt.figure(figsize=(20,10))
     sns.boxplot(x="year",y="close",data=heatmapdata)
     sns.lineplot(x="year",y="close",data=heatmapdata)
@@ -190,16 +192,10 @@ def model(var):
     else:
         data1["forecasted_close"] = pd.Series((pred_new))
 
+    st.subheader('Best Basic Mathematical Model')
     fig = plt.figure(figsize = (20,8))
     plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
     st.pyplot(fig)
-    
-    st.subheader('Monthly Boxplot')
-    st.write(modelplot1)
-    st.subheader('Yearly Boxplot')
-    st.write(modelplot2)
-    st.subheader('Basic Mathematical Model')
-    st.write(modelplot3)
 	
 ######################################################################################
 
