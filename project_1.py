@@ -378,11 +378,85 @@ def arima(var):
     forecast(ARIMA_model)
 
 #############################################################################################
+
+def lstm(var):
+    tv = TvDatafeed()
+    data = tv.get_hist(symbol=var,exchange='NSE',n_bars=5000)
+    data['date'] = data.index.astype(str)
+    new = data['date'].str.split(' ',expand=True)
+    data['date'] = new[0]
+    data['date'] = pd.to_datetime(data['date'])
+    data = data.set_index('date',drop=False)
+    
+    from sklearn.preprocessing import MinMaxScaler
+    from keras.models import Sequential
+    from keras.layers import Dense, Dropout, LSTM
+
+    new_data=data.drop(['symbol','open','high','low','volume','date',],axis=1)
+
+    #creating train and test sets
+    dataset = new_data
+
+    test_size = round(0.25 * (dataset.shape[0]+1))
+    train = dataset[:-test_size]
+    valid = dataset[-test_size:]
+
+    #converting dataset into x_train and y_train
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaled_data = scaler.fit_transform(dataset)
+
+    x_train, y_train = [], []
+
+    for i in range(46,len(train)):
+        x_train.append(scaled_data[i-46:i,0])
+        y_train.append(scaled_data[i,0])
+
+    x_train, y_train = np.array(x_train), np.array(y_train)
+    x_train = np.reshape(x_train, (x_train.shape[0],x_train.shape[1],1))
+
+    # create and fit the LSTM network
+    model = Sequential()
+    model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1],1)))
+    model.add(LSTM(units=50))
+    model.add(Dense(1))
+
+    model.compile(loss='mean_squared_error', optimizer='adam')
+    model.fit(x_train, y_train, epochs=1, batch_size=1, verbose=2)
+
+    #predicting 896 values, using past 46 from the train data
+    inputs = new_data[len(new_data) - len(valid) - 46:].values
+    inputs = inputs.reshape(-1,1)
+    inputs  = scaler.transform(inputs)
+
+    X_test = []
+
+    for i in range(46,inputs.shape[0]):
+        X_test.append(inputs[i-46:i,0])
+
+    X_test = np.array(X_test)
+    X_test = np.reshape(X_test, (X_test.shape[0],X_test.shape[1],1))
+
+    closing_price = model.predict(X_test)
+    closing_price = scaler.inverse_transform(closing_price)
+
+    # Results
+    rms=np.sqrt(np.mean(np.power((valid-closing_price),2)))
+
+    st.header('LSTM Artificial Neural Network based Forecasting')
+    st.subheader('Forecast by LSTM ANN')
+    #for plotting
+    fig = plt.figure(figsize=(25,10))
+    train = dataset[:-test_size]
+    valid = dataset[-test_size:]
+    valid['Predictions'] = closing_price
+    plt.plot(dataset['close'], label='original')
+    plt.plot(valid['Predictions'],label='predicted')
+    plt.legend()
+    st.pyplot(fig)
+
+#################################################################################
 '''
-def lstm():
 	
-
-
 def fb():
 	
 ####################################################################
@@ -1032,15 +1106,11 @@ if MODEL == 'Data Driven':
 
 if MODEL == 'ARIMA':
 	arima(COMPANY)
-'''
-
 
 if MODEL == 'LSTM Artificial Neural Network':
-	st.header('LSTM Artificial Neural Network based Forecasting')
-	st.subheader('Forecast by LSTM ANN')
-	st.write(lstmplot0)
+	lstm(COMPANY)
 	
-
+'''
 if MODEL == 'FB Prophet':
 	st.header('Forecast by FB Prophet Model')
 	st.subheader('Predicted Result')
