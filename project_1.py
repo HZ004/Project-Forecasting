@@ -297,15 +297,92 @@ def datad(var):
     plt.legend()
     st.pyplot(fig)
 
+###########################################################################################################
+
+def arima(var):
+    tv = TvDatafeed()
+    data = tv.get_hist(symbol=var,exchange='NSE',n_bars=5000)
+    data['date'] = data.index.astype(str)
+    new = data['date'].str.split(' ',expand=True)
+    data['date'] = new[0]
+    data['date'] = pd.to_datetime(data['date'])
+    data = data.set_index('date',drop=False)
+    
+    from statsmodels.tsa.stattools import adfuller
+    from statsmodels.tsa.stattools import kpss
+	
+    st.header('Auto ARIMA Forecast Result')
+    st.subheader('Determining stationarity of the dataset using Augmented Dickey-Fuller Test')
+
+    result=adfuller (data['close'])
+    st.write(print('Test Statistic: %f' %result[0]))
+    st.write(print('p-value: %f' %result[1]))
+    st.write(print('Critical values:'))
+    for key, value in result[4].items ():
+        st.write(print('\t%s: %.3f' %(key, value)))
+
+	
+    st.subheader('Determining stationarity of the dataset usingKwiatkowski Phillips Schmidt Shin (KPSS) test')
+    result_kpss_ct=kpss(data['close'],regression="ct")
+    st.write(print('Test Statistic: %f' %result_kpss_ct[0]))
+    st.write(print('p-value: %f' %result_kpss_ct[1]))
+    st.write(print('Critical values:'))
+    for key, value in result_kpss_ct[3].items():
+        st.write(print('\t%s: %.3f' %(key, value)))
+
+    # Auto ARIMA on complete Dataset
+    import itertools
+    from math import sqrt
+    import statsmodels.api as sm
+    from sklearn.metrics import mean_squared_error
+    from statsmodels.tsa.arima.model import ARIMA, ARIMAResults
+    from statsmodels.tsa.stattools import adfuller
+    from statsmodels.tsa.seasonal import seasonal_decompose
+    from pandas.plotting import register_matplotlib_converters
+    register_matplotlib_converters()
+
+    ARIMA_model = pm.auto_arima(data['close'], 
+                        start_p=1, 
+                        start_q=1,
+                        test='adf', # use adftest to find optimal 'd'
+                        max_p=3, max_q=3, # maximum p and q
+                        m=1, # frequency of series (if m==1, seasonal is set to FALSE automatically)
+                        d=None,# let model determine 'd'
+                        seasonal=False, # No Seasonality for standard ARIMA
+                        trace=False, #logs 
+                        error_action='warn', #shows errors ('ignore' silences these)
+                        suppress_warnings=True,
+                        stepwise=True)
+    
+    from pandas.tseries.frequencies import DAYS
+    def forecast(ARIMA_model, periods=730):
+        # Forecast
+        n_periods = periods
+        fitted, confint = ARIMA_model.predict(n_periods=n_periods, return_conf_int=True)
+        index_of_fc = pd.date_range(data.index[-1] + pd.DateOffset(days=1), periods = n_periods, freq='D')
+        
+        # make series for plotting purpose
+        fitted_series = pd.Series(fitted.values, index=index_of_fc)
+        lower_series = pd.Series(confint[:, 0], index=index_of_fc)
+        upper_series = pd.Series(confint[:, 1], index=index_of_fc)
+
+        # Plot
+	st.subheader('Auto-ARIMA Forecast')
+        fig = plt.figure(figsize=(20,8))
+        plt.plot(data["close"])
+        plt.plot(fitted_series, color='darkgreen')
+        plt.fill_between(lower_series.index, 
+                        lower_series, 
+                        upper_series, 
+                        color='k', alpha=.15)
+
+        plt.title("ARIMA - Forecast of Close Price")
+        st.pyplot(fig)
+
+    forecast(ARIMA_model)
+
+#############################################################################################
 '''
-def datad():
-	
-
-
-def arima():
-	
-
-
 def lstm():
 	
 
@@ -951,37 +1028,15 @@ rmse = np.sqrt(mse)
 
 ##########################################################################
 
-if  MODEL == 'Model Based':
+if MODEL == 'Model Based':
 	model(COMPANY)
 	
-
 if MODEL == 'Data Driven':
 	datad(COMPANY)
-'''
+
 if MODEL == 'ARIMA':
-
-	st.header('Auto ARIMA Forecast Result')
-
-	st.header('Determining stationarity of the dataset using Augmented Dickey-Fuller Test')
-
-	result=adfuller (timeseriesdf['close'])
-	st.write(print('Test Statistic: %f' %result[0]))
-	st.write(print('p-value: %f' %result[1]))
-	st.write(print('Critical values:'))
-	for key, value in result[4].items ():
-     		st.write(print('\t%s: %.3f' %(key, value)))
-
-	st.header('Determining stationarity of the dataset usingKwiatkowski Phillips Schmidt Shin (KPSS) test')
-
-	result_kpss_ct=kpss(timeseriesdf['close'],regression="ct")
-	st.write(print('Test Statistic: %f' %result_kpss_ct[0]))
-	st.write(print('p-value: %f' %result_kpss_ct[1]))
-	st.write(print('Critical values:'))
-	for key, value in result_kpss_ct[3].items():
-		st.write(print('\t%s: %.3f' %(key, value)))
-
-	st.subheader('ARIMA Forecast Plot')
-	st.write(arimaplot0)
+	arima(COMPANY)
+'''
 
 
 if MODEL == 'LSTM Artificial Neural Network':
