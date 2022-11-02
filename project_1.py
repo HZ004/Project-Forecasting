@@ -784,7 +784,7 @@ if MODEL == 'ARIMA':
 
 	st.header('Auto ARIMA Forecast Result')
 
-	st.header(Determining stationarity of the dataset using Augmented Dickey-Fuller Test)
+	st.header('Determining stationarity of the dataset using Augmented Dickey-Fuller Test')
 
 	result=adfuller (timeseriesdf['close'])
 	st.write(print('Test Statistic: %f' %result[0]))
@@ -793,7 +793,7 @@ if MODEL == 'ARIMA':
 	for key, value in result[4].items ():
      		st.write(print('\t%s: %.3f' %(key, value)))
 
-	st.header(Determining stationarity of the dataset usingKwiatkowski Phillips Schmidt Shin (KPSS) test)
+	st.header('Determining stationarity of the dataset usingKwiatkowski Phillips Schmidt Shin (KPSS) test')
 
 	result_kpss_ct=kpss(timeseriesdf['close'],regression="ct")
 	st.write(print('Test Statistic: %f' %result_kpss_ct[0]))
