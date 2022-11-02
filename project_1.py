@@ -15,12 +15,16 @@ from tvDatafeed import TvDatafeed ,Interval
 import fbprophet
 from fbprophet import Prophet
 
-COMPANY = 'NIFTY'
+
 
 st.title('Model Deployment: Forecasting')
 st.sidebar.header('Input Company symbol listed on NSE')
 
 COMPANY = st.sidebar.text_input("Insert Company name in Upper cases")
+
+if COMPANY == "":
+	COMPANY = 'NIFTY'
+
 MODEL = st.sidebar.selectbox('Forecasting Model',('Model Based','Data Driven','ARIMA','LSTM Artificial Neural Network','FB Prophet'))
 
 tv = TvDatafeed()
