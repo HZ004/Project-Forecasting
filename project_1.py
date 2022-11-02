@@ -777,7 +777,7 @@ if MODEL == 'Data Driven':
 	st.pyplot(dataplot0)
 	st.subheader('Auto-Correlation')
 	st.pyplot(dataplot1)
-	st.subheader('Best Holt Winter's Model Result')
+	st.subheader('Best Holt Winters Model Result')
 	st.pyplot(dataplot2)
 
 if MODEL == 'ARIMA':
