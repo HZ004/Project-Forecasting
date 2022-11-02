@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-%matplotlib inline
+#%matplotlib inline
 
 import pandas as pd
 import numpy as np
@@ -78,19 +78,20 @@ def model(var):
                         fill_value=0)
     heatmap_y_month1 = heatmap_y_month[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']]
 
-
+    st.header('Model Based Forecast Result')
+    st.subheader('Heatmap')
     plt.figure(figsize=(20,10))
-    modelplot0 = sns.heatmap(heatmap_y_month1,
-            annot=True,
-            fmt="g",
-            cmap = 'YlOrBr')
+    st.pyplot(sns.heatmap(heatmap_y_month1,
+			  annot=True,
+			  fmt="g",
+			  cmap = 'YlOrBr'))
 
     # Boxplot for every
     plt.figure(figsize=(20,10))
-    modelplot1 = sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
+    sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
 
     plt.figure(figsize=(20,10))
-    modelplot2 = sns.boxplot(x="year",y="close",data=heatmapdata)
+    sns.boxplot(x="year",y="close",data=heatmapdata)
 
     sns.lineplot(x="year",y="close",data=heatmapdata)
 
@@ -191,9 +192,7 @@ def model(var):
     plt.figure(figsize = (20,8))
     modelplot3 = plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
 
-    st.header('Model Based Forecast Result')
-    st.subheader('Heatmap')
-    st.write(modelplot0)
+    
     st.subheader('Monthly Boxplot')
     st.write(modelplot1)
     st.subheader('Yearly Boxplot')
