@@ -80,19 +80,20 @@ def model(var):
 
     st.header('Model Based Forecast Result')
     st.subheader('Heatmap')
-    plt.figure(figsize=(20,10))
-    st.write(sns.heatmap(heatmap_y_month1,
-			  annot=True,
-			  fmt="g",
-			  cmap = 'YlOrBr'))
+    fig = plt.figure(figsize=(20,10))
+    sns.heatmap(heatmap_y_month1,annot=True,fmt="g",cmap = 'YlOrBr')
+    st.pyplot(fig)
 
     # Boxplot for every
-    plt.figure(figsize=(20,10))
+    fig = plt.figure(figsize=(20,10))
     sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
+    st.pyplot(fig)
 
-    plt.figure(figsize=(20,10))
+    fig = plt.figure(figsize=(20,10))
     sns.boxplot(x="year",y="close",data=heatmapdata)
-
+    sns.lineplot(x="year",y="close",data=heatmapdata)
+    st.pyplot(fig)
+	
     sns.lineplot(x="year",y="close",data=heatmapdata)
 
     #### Splitting data
@@ -189,9 +190,9 @@ def model(var):
     else:
         data1["forecasted_close"] = pd.Series((pred_new))
 
-    plt.figure(figsize = (20,8))
-    modelplot3 = plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
-
+    fig = plt.figure(figsize = (20,8))
+    plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
+    st.pyplot(fig)
     
     st.subheader('Monthly Boxplot')
     st.write(modelplot1)
