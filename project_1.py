@@ -700,13 +700,13 @@ rmse = np.sqrt(mse)
 if  MODEL == 'Model Based':
 	st.header('Model Based Forecast Result')
 	st.subheader('Heatmap')
-	st.write(modelplot0)
+	smodelplot0
 	st.subheader('Monthly Boxplot')
-	st.write(modelplot1)
+	modelplot1
 	st.subheader('Yearly Boxplot')
-	st.write(modelplot2)
+	modelplot2
 	st.subheader('Basic Mathematical Model')
-	st.write(modelplot3)
+	modelplot3
 
 if MODEL == 'Data Driven':
 	st.header('Data Driven Forecast Result')
