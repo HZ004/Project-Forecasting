@@ -367,7 +367,7 @@ def arima(var):
         upper_series = pd.Series(confint[:, 1], index=index_of_fc)
 
         # Plot
-	st.subheader('Auto-ARIMA Forecast')
+        st.subheader('Auto-ARIMA Forecast')
         fig = plt.figure(figsize=(20,8))
         plt.plot(data["close"])
         plt.plot(fitted_series, color='darkgreen')
