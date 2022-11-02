@@ -91,7 +91,7 @@ plt.rc("figure", figsize=(20,8))
 plot_acf(timeseriesdf, lags=1000)
 plt.show()
 
-"""# Taking care of outliers"""
+# Taking care of outliers
 
 
 data['returns percentage'] = ((data['close']/data['close'].shift(1)) -1)*100
@@ -100,7 +100,7 @@ plt.legend()
 
 datac = data.iloc[1:]
 x = datac['returns percentage']
-x
+
 
 plt.boxplot(x,vert=False)
 
@@ -126,10 +126,9 @@ upsampled.shape
 interpolated = upsampled.interpolate(method='linear')
 interpolated.head(25)
 
-plt.rc("figure", figsize=(20,8))
-interpolated.plot()
 
-"""#### Downsampling Data"""
+
+#### Downsampling Data"""
 
 # downsample to quarterly intervals
 resample = timeseriessq.resample('Q')
