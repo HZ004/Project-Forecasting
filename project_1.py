@@ -50,7 +50,7 @@ fig = cf.Figure(data=[cf.Candlestick(x=data.index,
                 low = data['low'],
                 close = data['close'])])
 fig.update_layout(xaxis_rangeslider_visible=False)
-st.pyplot(fig)
+st.write(fig)
 
 
 st.subheader('Line Chart')
