@@ -81,7 +81,7 @@ def model(var):
     st.header('Model Based Forecast Result')
     st.subheader('Heatmap')
     plt.figure(figsize=(20,10))
-    st.pyplot(sns.heatmap(heatmap_y_month1,
+    st.write(sns.heatmap(heatmap_y_month1,
 			  annot=True,
 			  fmt="g",
 			  cmap = 'YlOrBr'))
