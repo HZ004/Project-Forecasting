@@ -158,7 +158,7 @@ def baseplots(var):
     data['date'] = pd.to_datetime(data['date'])
     data = data.set_index('date')
     
-    st.subheader('Candlestick Chart for {}'.format(var))
+    st.subheader('Interactive Candlestick Chart for {}'.format(var))
     fig = cf.Figure(data=[cf.Candlestick(x=data.index,
 	   		           	open=data['open'],
 			          	high = data['high'],
@@ -212,17 +212,23 @@ def model(var):
     st.header('Model Based Forecast Result for {}'.format(var))
     st.subheader('Heatmap')
     fig = plt.figure(figsize=(20,10))
+    plt.xlabel('Month')
+    plt.ylabel('Year')
     sns.heatmap(heatmap_y_month1,annot=True,fmt="g",cmap = 'YlOrBr')
     st.pyplot(fig)
 
     # Boxplot for every month
     st.subheader('Monthly Boxplot')
     fig = plt.figure(figsize=(20,10))
+    plt.xlabel('Month')
+    plt.ylabel('Stock Price')
     sns.boxplot(x="month",y="close",data=heatmapdata, order = ["Jan", "Feb","Mar", "Apr","May", "Jun","Jul", "Aug","Sep", "Oct","Nov", "Dec"])
     st.pyplot(fig)
 
     st.subheader('Yearly Boxplot')
     fig = plt.figure(figsize=(20,10))
+    plt.xlabel('Year')
+    plt.ylabel('Stock Price')
     sns.boxplot(x="year",y="close",data=heatmapdata)
     sns.lineplot(x="year",y="close",data=heatmapdata)
     st.pyplot(fig)
@@ -325,6 +331,8 @@ def model(var):
 
     st.subheader('Best Basic Mathematical Model')
     fig = plt.figure(figsize = (20,8))
+    plt.xlabel('No.of Days')
+    plt.ylabel('Stock Price')
     plt.plot(data1[['close','forecasted_close']].reset_index(drop=True))
     st.pyplot(fig)
 	
