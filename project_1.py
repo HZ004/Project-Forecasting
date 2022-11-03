@@ -34,8 +34,7 @@ def add_bg_from_url():
 
 add_bg_from_url()
 
-st.image("https://t4.ftcdn.net/jpg/02/45/05/33/240_F_245053393_ibbqYuEg7UziO3d2lrY3kSJ917JERmW0.jpg", width=100)
-st.title('Model Deployment: Forecasting')
+st.title('Model Deployment: Forecasting 📈 🗠 📉')
 st.sidebar.header('Input Company symbol listed on NSE')
 
 COMPANY = st.sidebar.selectbox("Select Company 1 from list",('NIFTY','BANKNIFTY','3MINDIA','AARTIDRUGS','AARTIIND','AAVAS','ABB','ABCAPITAL','ABFRL','ACC',
@@ -635,6 +634,8 @@ def fb(var):
 with col1:
     baseplots(COMPANY)
 
+st.markdown("""---""") 
+
 with col2:
     baseplots(COMPANY1)
 
@@ -642,13 +643,17 @@ with col2:
 if MODEL == 'Model Based':
 	with col1:
     	    model(COMPANY)
-
+	
+	st.markdown("""---""") 
+	
 	with col2:
     	    model(COMPANY1)
 	
 if MODEL == 'Data Driven':
 	with col1:
     	    datad(COMPANY)
+	
+	st.markdown("""---""") 
 
 	with col2:
     	    datad(COMPANY1)
@@ -656,6 +661,8 @@ if MODEL == 'Data Driven':
 if MODEL == 'ARIMA':
 	with col1:
     	    arima(COMPANY)
+	
+	st.markdown("""---""") 
 
 	with col2:
     	    arima(COMPANY1)
@@ -663,6 +670,8 @@ if MODEL == 'ARIMA':
 if MODEL == 'LSTM Artificial Neural Network':
 	with col1:
     	    lstm(COMPANY)
+	
+	st.markdown("""---""") 
 
 	with col2:
     	    lstm(COMPANY1)
@@ -670,6 +679,8 @@ if MODEL == 'LSTM Artificial Neural Network':
 if MODEL == 'FB Prophet':
 	with col1:
     	    fb(COMPANY)
+	
+	st.markdown("""---""") 
 
 	with col2:
     	    fb(COMPANY1)
