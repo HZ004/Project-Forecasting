@@ -4,3 +4,6 @@ backgroundColor = "#e4e3e3"
 secondaryBackgroundColor = "#0083B8"
 textColor = "#C6CDD4"
 font = "sans-serif"
+
+#backgroundColor = "#00172B"
+#textColor = "#DCDCDC"
