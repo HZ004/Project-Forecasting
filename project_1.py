@@ -635,19 +635,9 @@ def fb(var):
 
     st.header('Forecast by FB Prophet Model for {}'.format(var))
     st.subheader('Predicted Result')
-    fig = plt.figure(figsize=(20,10))
-    model.plot(pred)
-    plt.xlabel('Year')
-    plt.ylabel('Stock Price')
-    st.pyplot(fig)
-    #st.pyplot(model.plot(pred))
-
+    st.pyplot(model.plot(pred))
     st.subheader('Other Components of FBPROPHET')
-    fig = plt.figure(figsize=(20,10))
-    model.plot_components(pred)
-    plt.xlabel('Year')
-    st.pyplot(fig)
-    #st.write(model.plot_components(pred))
+    st.write(model.plot_components(pred))
 
     se = np.square(pred.loc[:, 'yhat'] - data2.y)
     mse = np.mean(se)
