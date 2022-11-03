@@ -210,7 +210,7 @@ def model(var):
     heatmap_y_month1 = heatmap_y_month[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']]
 
     st.header('Model Based Forecast Result for {}'.format(var))
-    st.subheader('Heatmap')
+    st.subheader('Heatmap(monthly avg)')
     fig = plt.figure(figsize=(20,10))
     sns.heatmap(heatmap_y_month1,annot=True,fmt="g",cmap = 'YlOrBr')
     plt.xlabel('Month')
@@ -382,6 +382,8 @@ def datad(var):
     data1['close'].plot(label="org")
     for i in range(50,201,50):
         data1["close"].rolling(i).mean().plot(label=str(i))
+    plt.xlabel('No.of Days')
+    plt.ylabel('Stock Price')
     plt.legend(loc='best')
     st.pyplot(fig)
 	
@@ -435,6 +437,8 @@ def datad(var):
     fig = plt.figure(figsize=(20,8))
     plt.plot(data1.close, label = "Actual")
     plt.plot(forecasted, label = "Forecasted")
+    plt.xlabel('No.of Days')
+    plt.ylabel('Stock Price')
     plt.legend()
     st.pyplot(fig)
 
