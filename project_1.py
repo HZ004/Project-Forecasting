@@ -164,10 +164,12 @@ def baseplots(var):
 			          	high = data['high'],
 			           	low = data['low'],
 			           	close = data['close'])])
+	
     fig.update_layout(xaxis_rangeslider_visible=False,
-		      title="Interactive Candlestick Chart",
+		      title=f"{var}'s adjusted stock price",
 		      xaxis_title="Year",
 		      yaxis_title="Stock Price")
+
     st.plotly_chart(fig, use_container_width = True)
 
 
