@@ -210,7 +210,7 @@ def model(var):
     heatmap_y_month1 = heatmap_y_month[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']]
 
     st.header('Model Based Forecast Result for {}'.format(var))
-    st.subheader('Heatmap(monthly avg)')
+    st.subheader('Heatmap (Monthly avg)')
     fig = plt.figure(figsize=(20,10))
     sns.heatmap(heatmap_y_month1,annot=True,fmt="g",cmap = 'YlOrBr')
     plt.xlabel('Month')
@@ -518,6 +518,8 @@ def arima(var):
                         color='k', alpha=.15)
 
         plt.title("ARIMA - Forecast of Close Price")
+	plt.xlabel('Year')
+        plt.ylabel('Stock Price')
         st.pyplot(fig)
 
     forecast(ARIMA_model)
@@ -596,6 +598,8 @@ def lstm(var):
     valid['Predictions'] = closing_price
     plt.plot(dataset['close'], label='original')
     plt.plot(valid['Predictions'],label='predicted')
+    plt.xlabel('Year')
+    plt.ylabel('Stock Price')
     plt.legend()
     st.pyplot(fig)
 
