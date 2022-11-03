@@ -22,7 +22,7 @@ def add_bg_from_url():
          f"""
          <style>
          .stApp {{
-             background-image: url("https://wallpapercave.com/download/bull-bear-wallpapers-wp7802925/");
+             background-image: url("https://wallpapercave.com/download/bull-bear-wallpapers-wp7802925");
              background-attachment: fixed;
              background-size: cover
          }}
