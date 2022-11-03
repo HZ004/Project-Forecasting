@@ -159,14 +159,14 @@ def baseplots(var):
     data = data.set_index('date')
     
     st.subheader('Candlestick Chart for {}'.format(var))
-    plt.xlabel('Year')
-    plt.ylabel('Stock Price')
-    plt.title('Interactive Candlestick Chart')
-    fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
-	   		           open=data['open'],
-			           high = data['high'],
-			           low = data['low'],
-			           close = data['close'])])
+    fig = cf.Figure(data=[cf.Candlestick(x=data.index,
+	   		           	open=data['open'],
+			          	high = data['high'],
+			           	low = data['low'],
+			           	close = data['close'],
+					title='Interactive Candlestick Chart',
+					xTitle='Year',
+					yTitle='Stock Price')])
     fig.update_layout(xaxis_rangeslider_visible=False)
     st.plotly_chart(fig, use_container_width = True)
 
