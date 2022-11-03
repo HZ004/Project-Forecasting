@@ -34,6 +34,7 @@ def add_bg_from_url():
 
 add_bg_from_url()
 
+st.image(https://t4.ftcdn.net/jpg/02/45/05/33/240_F_245053393_ibbqYuEg7UziO3d2lrY3kSJ917JERmW0.jpg, width=100)
 st.title('Model Deployment: Forecasting')
 st.sidebar.header('Input Company symbol listed on NSE')
 
