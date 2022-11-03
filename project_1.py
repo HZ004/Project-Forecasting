@@ -152,7 +152,7 @@ def baseplots(var):
     data['date'] = pd.to_datetime(data['date'])
     data = data.set_index('date')
     
-    st.subheader('Candlestick Chart')
+    st.subheader('Candlestick Chart for {}'.format(var))
     fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
 	   		           open=data['open'],
 			           high = data['high'],
