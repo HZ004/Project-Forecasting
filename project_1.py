@@ -516,10 +516,9 @@ def arima(var):
                         lower_series, 
                         upper_series, 
                         color='k', alpha=.15)
-
-        plt.title("ARIMA - Forecast of Close Price")
+	plt.title("ARIMA - Forecast of Close Price")
 	plt.xlabel('Year')
-        plt.ylabel('Stock Price')
+	plt.ylabel('Stock Price')
         st.pyplot(fig)
 
     forecast(ARIMA_model)
