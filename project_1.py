@@ -163,11 +163,11 @@ def baseplots(var):
 	   		           	open=data['open'],
 			          	high = data['high'],
 			           	low = data['low'],
-			           	close = data['close'],
-					title='Interactive Candlestick Chart',
-					xTitle='Year',
-					yTitle='Stock Price')])
-    fig.update_layout(xaxis_rangeslider_visible=False)
+			           	close = data['close'])])
+    fig.update_layout(xaxis_rangeslider_visible=False,
+		      title="Interactive Candlestick Chart",
+		      xaxis_title="Year",
+		      yaxis_title="Stock Price")
     st.plotly_chart(fig, use_container_width = True)
 
 
