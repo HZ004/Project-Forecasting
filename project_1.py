@@ -17,6 +17,22 @@ from fbprophet import Prophet
 
 st.set_page_config(layout="wide")
 
+def add_bg_from_url():
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://wallpapersafari.com/download/O6jLGZ/");
+             background-attachment: fixed;
+             background-size: cover
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+add_bg_from_url()
+
 st.title('Model Deployment: Forecasting')
 st.sidebar.header('Input Company symbol listed on NSE')
 
