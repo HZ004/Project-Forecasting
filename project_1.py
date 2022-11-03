@@ -73,8 +73,59 @@ COMPANY = st.sidebar.selectbox("Select Company from list",('NIFTY','BANKNIFTY','
 							   'VIPIND','VMART','VOLTAS','VRLLOG','VSTIND','VTL','WABCOINDIA','WELCORP','WELSPUNIND','WHIRLPOOL',
 							   'WIPRO','WOCKPHARMA','YESBANK','ZEEL','ZENSARTECH','ZYDUSWELL'))
 
-if COMPANY == "":
-	COMPANY = 'NIFTY'
+COMPANY1 = st.sidebar.selectbox("Select Company from list",('NIFTY','BANKNIFTY','3MINDIA','AARTIDRUGS','AARTIIND','AAVAS','ABB','ABCAPITAL','ABFRL','ACC',
+							   'ACCELYA','ADANIENT','ADANIGAS','ADANIGREEN','ADANIPORTS','ADANIPOWER','ADANITRANS','ADVENZYMES',
+							   'AEGISCHEM','AFFLE','AHLUCONT','AIAENG','AJANTPHARM','AKZOINDIA','ALKEM','ALKYLAMINE','ALLCARGO',
+							   'AMARAJABAT','AMBER','AMBUJACEM','APARINDS','APLAPOLLO','APLLTD','APOLLOHOSP','APOLLOTYRE','ARVINDFASN',
+							   'ASAHIINDIA','ASHOKA','ASHOKLEY','ASIANPAINT','ASTERDM','ASTRAL','ASTRAZEN','ATUL','AUBANK','AUROPHARMA',
+							   'AVANTIFEED','AXISBANK','BAJAJ-AUTO','BAJAJCON','BAJAJELEC','BAJAJFINSV','BAJAJHLDNG','BAJFINANCE',
+							   'BALKRISIND','BALMLAWRIE','BALRAMCHIN','BANDHANBNK','BANKBARODA','BANKINDIA','BASF','BATAINDIA',
+							   'BBTC','BDL','BEL','BEML','BERGEPAINT','BHARATFORG','BHARATRAS','BHARTIARTL','BHEL','BIOCON',
+							   'BIRLACORPN','BLUEDART','BLUESTARCO','BOSCHLTD','BPCL','BRIGADE','BRITANNIA','BSE','BSOFT','CADILAHC',
+							   'CANBK','CANFINHOME','CAPLIPOINT','CARBORUNIV','CASTROLIND','CCL','CDSL','CEATLTD','CENTRALBK',
+							   'CENTURYPLY','CENTURYTEX','CERA','CESC','CGCL','CHALET','CHAMBLFERT','CHOLAFIN','CHOLAHLDNG','CIPLA',
+							   'COALINDIA','COCHINSHIP','COLPAL','CONCOR','COROMANDEL','CREDITACC','CRISIL','CROMPTON','CSBBANK',
+							   'CUB','CUMMINSIND','CYIENT','DABUR','DALBHARAT','DBCORP','DBL','DCBBANK','DCMSHRIRAM','DEEPAKNTR',
+							   'DELTACORP','DEN','DHANUKA','DIAMONDYD','DIVISLAB','DIXON','DLF','DMART','DRREDDY','ECLERX','EDELWEISS',
+							   'EICHERMOT','EIDPARRY','EIHOTEL','ELGIEQUIP','EMAMILTD','ENDURANCE','ENGINERSIN','EQUITAS','ERIS',
+							   'ESABINDIA','ESCORTS','ESSELPACK','EXIDEIND','FACT','FAIRCHEM','FCONSUMER','FDC','FEDERALBNK',
+							   'FINCABLES','FINEORG','FINPIPE','FLFL','FLUOROCHEM','FMGOETZE','FORTIS','FRETAIL','FSL','GAEL',
+							   'GAIL','GALAXYSURF','GARFIBRES','GEPIL','GESHIP','GET&D','GICRE','GILLETTE','GLAXO','GLENMARK',
+							   'GMMPFAUDLR','GMRINFRA','GNFC','GODFRYPHLP','GODREJAGRO','GODREJCP','GODREJIND','GODREJPROP',
+							   'GPPL','GRANULES','GRAPHITE','GRASIM','GREAVESCOT','GREENLAM','GRINDWELL','GRSE','GSFC','GSKCONS',
+							   'GSPL','GUJALKALI','GUJGASLTD','GULFOILLUB','HAL','HATHWAY','HATSUN','HAVELLS','HCLTECH','HDFC',
+							   'HDFCAMC','HDFCBANK','HDFCLIFE','HEG','HEIDELBERG','HEROMOTOCO','HEXAWARE','HFCL','HGINFRA','HINDALCO',
+							   'HINDCOPPER','HINDPETRO','HINDUNILVR','HINDZINC','HONAUT','HSCL','HUDCO','IBREALEST','IBULHSGFIN',
+							   'IBVENTURES','ICICIBANK','ICICIGI','ICICIPRULI','ICRA','IDBI','IDEA','IDFC','IDFCFIRSTB','IEX','IGL',
+							   'IIFL','IIFLWAM','INDHOTEL','INDIACEM','INDIAMART','INDIANB','INDIGO','INDOCO','INDOSTAR','INDUSINDBK',
+							   'INFIBEAM','INFRATEL','INFY','INGERRAND','INOXLEISUR','IOB','IOC','IPCALAB','IRB','IRCON','IRCTC','ISEC',
+							   'ITC','ITDC','ITI','JAGRAN','JBCHEPHARM','JCHAC','JINDALSAW','JINDALSTEL','JKCEMENT','JKLAKSHMI','JKPAPER',
+							   'JMFINANCIL','JSL','JSWENERGY','JSWHL','JSWSTEEL','JUBILANT','JUBLFOOD','JUSTDIAL','JYOTHYLAB',
+							   'KAJARIACER','KALPATPOWR','KANSAINER','KARURVYSYA','KEC','KEI','KIOCL','KIRLOSENG','KNRCON','KOTAKBANK',
+							   'KPRMILL','KRBL','KSB','KSCL','KTKBANK','L&TFH','LALPATHLAB','LAOPALA','LAURUSLABS','LAXMIMACH',
+							   'LEMONTREE','LICHSGFIN','LINDEINDIA','LT','LTI','LTTS','LUPIN','LUXIND','M&M','M&MFIN','MAHABANK',
+							   'MAHINDCIE','MAHLOG','MAHSCOOTER','MAHSEAMLES','MANAPPURAM','MARICO','MARUTI','MASFIN','MAXINDIA',
+							   'MCDOWELL-N','METROPOLIS','MFSL','MGL','MHRIL','MIDHANI','MINDACORP','MINDAIND','MINDTREE','MMTC',
+							   'MOIL','MOTHERSUMI','MOTILALOFS','MPHASIS','MRF','MRPL','MUTHOOTFIN','NAM-INDIA','NATCOPHARM',
+							   'NATIONALUM','NAUKRI','NAVINFLUOR','NAVNETEDUL','NBCC','NCC','NESCO','NETWORK18','NH','NHPC','NIACL',
+							   'NIITLTD','NIITTECH','NILKAMAL','NLCINDIA','NMDC','NTPC','OBEROIRLTY','OFSS','OIL','OMAXE','ONGC',
+							   'ORIENTELEC','ORIENTREF','PAGEIND','PAPERPROD','PEL','PERSISTENT','PETRONET','PFC','PFIZER','PGHH',
+							   'PGHL','PHOENIXLTD','PIDILITIND','PIIND','PNB','PNBHOUSING','PNCINFRA','POLYCAB','POLYMED','POWERGRID',
+							   'POWERINDIA','PRESTIGE','PRINCEPIPE','PRSMJOHNSN','PSPPROJECT','PTC','PVR','QUESS','RADICO','RAIN',
+							   'RAJESHEXPO','RALLIS','RAMCOCEM','RATNAMANI','RAYMOND','RBLBANK','RCF','RECLTD','REDINGTON','RELAXO',
+							   'RELIANCE','RESPONIND','RITES','RVNL','SAIL','SANOFI','SBICARD','SBILIFE','SBIN','SCHAEFFLER','SCHNEIDER',
+							   'SCI','SEQUENT','SFL','SHILPAMED','SHOPERSTOP','SHREECEM','SHRIRAMCIT','SIEMENS','SIS','SJVN','SKFINDIA',
+							   'SOBHA','SOLARA','SOLARINDS','SONATSOFTW','SPANDANA','SPARC','SRF','SRTRANSFIN','STAR','STARCEMENT',
+							   'STRTECH','SUDARSCHEM','SUMICHEM','SUNCLAYLTD','SUNDARMFIN','SUNDRMFAST','SUNPHARMA','SUNTECK','SUNTV',
+							   'SUPPETRO','SUPRAJIT','SUPREMEIND','SUVENPHAR','SWANENERGY','SWSOLAR','SYMPHONY','SYNGENE','TASTYBITE',
+							   'TATACHEM','TATACOMM','TATACONSUM','TATAELXSI','TATAINVEST','TATAMOTORS','TATAPOWER','TATASTEEL',
+							   'TATASTLBSL','TCI','TCIEXP','TCNSBRANDS','TCS','TEAMLEASE','TECHM','TECHNOE','THERMAX','THYROCARE',
+							   'TIDEWATER','TIINDIA','TIMKEN','TITAN','TORNTPHARM','TORNTPOWER','TRENT','TRIDENT','TRITURBINE',
+							   'TTKPRESTIG','TV18BRDCST','TVSMOTOR','UBL','UCOBANK','UJJIVAN','UJJIVANSFB','ULTRACEMCO','UNIONBANK',
+							   'UPL','VAIBHAVGBL','VAKRANGEE','VARROC','VBL','VEDL','VENKEYS','VESUVIUS','VGUARD','VINATIORGA',
+							   'VIPIND','VMART','VOLTAS','VRLLOG','VSTIND','VTL','WABCOINDIA','WELCORP','WELSPUNIND','WHIRLPOOL',
+							   'WIPRO','WOCKPHARMA','YESBANK','ZEEL','ZENSARTECH','ZYDUSWELL'))
+
 
 MODEL = st.sidebar.selectbox('Forecasting Model',('Model Based','Data Driven','ARIMA','LSTM Artificial Neural Network','FB Prophet'))
 
@@ -89,20 +140,32 @@ data = data.set_index('date')
 timeseriesdf = data[['close']]
 timeseriessq = data['close']
 
-st.subheader('Candlestick Chart')
-fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
-			       open=data['open'],
-			       high = data['high'],
-			       low = data['low'],
-			       close = data['close'])])
-fig.update_layout(xaxis_rangeslider_visible=False)
-st.plotly_chart(fig, use_container_width = True)
+col1, col2 = st.beta_columns((1,1))
+
+#################################################################################
+def baseplots(var):
+    tv = TvDatafeed()
+    data = tv.get_hist(symbol=var,exchange='NSE',n_bars=5000)
+    data['date'] = data.index.astype(str)
+    new = data['date'].str.split(' ',expand=True)
+    data['date'] = new[0]
+    data['date'] = pd.to_datetime(data['date'])
+    data = data.set_index('date')
+    
+    st.subheader('Candlestick Chart')
+    fig = cf.Figure(data=[cf.Candlestick(x=data.index, 
+	   		           open=data['open'],
+			           high = data['high'],
+			           low = data['low'],
+			           close = data['close'])])
+    fig.update_layout(xaxis_rangeslider_visible=False)
+    st.plotly_chart(fig, use_container_width = True)
 
 
-st.subheader('Line Chart')
-fig2 = plt.figure(figsize = (20,8))
-plt.plot(data.close)
-st.write(fig2)
+    st.subheader('Line Chart')
+    fig2 = plt.figure(figsize = (20,8))
+    plt.plot(data.close)
+    st.write(fig2)
 
 ##################################################################################
 def model(var):
@@ -551,19 +614,44 @@ def fb(var):
     rmse = np.sqrt(mse)
 
 #######################################################################################
+with col1:
+    baseplots(COMPANY)
+
+with col2:
+    baseplots(COMPANY1)
+
 
 if MODEL == 'Model Based':
-	model(COMPANY)
+	with col1:
+    	    model(COMPANY)
+
+	with col2:
+    	    model(COMPANY1)
 	
 if MODEL == 'Data Driven':
-	datad(COMPANY)
+	with col1:
+    	    datad(COMPANY)
+
+	with col2:
+    	    datad(COMPANY1)
 
 if MODEL == 'ARIMA':
-	arima(COMPANY)
+	with col1:
+    	    arima(COMPANY)
+
+	with col2:
+    	    arima(COMPANY1)
 
 if MODEL == 'LSTM Artificial Neural Network':
-	lstm(COMPANY)
+	with col1:
+    	    lstm(COMPANY)
+
+	with col2:
+    	    lstm(COMPANY1)
 	
 if MODEL == 'FB Prophet':
-        fb(COMPANY)
-	
+	with col1:
+    	    fb(COMPANY)
+
+	with col2:
+    	    fb(COMPANY1)
