@@ -146,17 +146,6 @@ COMPANY1 = st.sidebar.selectbox("Select Company 2 from list",('NIFTY','BANKNIFTY
 
 MODEL = st.sidebar.selectbox('Forecasting Model',('Model Based','Data Driven','ARIMA','LSTM Artificial Neural Network','FB Prophet'))
 
-#tv = TvDatafeed()
-#data = tv.get_hist(symbol=COMPANY,exchange='NSE',n_bars=5000)
-#data['date'] = data.index.astype(str)
-#new = data['date'].str.split(' ',expand=True)
-#data['date'] = new[0]
-#data['date'] = pd.to_datetime(data['date'])
-#data = data.set_index('date')
-
-#timeseriesdf = data[['close']]
-#timeseriessq = data['close']
-
 col1, col2 = st.beta_columns((1,1))
 
 #################################################################################
@@ -175,6 +164,9 @@ def baseplots(var):
 			           high = data['high'],
 			           low = data['low'],
 			           close = data['close'])])
+    plt.xlabel('Year')
+    plt.ylabel('Stock Price')
+    plt.title('Interactive Candlestick Chart')
     fig.update_layout(xaxis_rangeslider_visible=False)
     st.plotly_chart(fig, use_container_width = True)
 
@@ -182,6 +174,10 @@ def baseplots(var):
     st.subheader('Line Chart for {}'.format(var))
     fig2 = plt.figure(figsize = (20,8))
     plt.plot(data.close)
+    plt.xlabel('Year')
+    plt.ylabel('Stock Price')
+    plt.title('Line Chart')
+    plt.grid(True)
     st.write(fig2)
 
 ##################################################################################
