@@ -129,16 +129,16 @@ COMPANY1 = st.sidebar.selectbox("Select Company 2 from list",('NIFTY','BANKNIFTY
 
 MODEL = st.sidebar.selectbox('Forecasting Model',('Model Based','Data Driven','ARIMA','LSTM Artificial Neural Network','FB Prophet'))
 
-tv = TvDatafeed()
-data = tv.get_hist(symbol=COMPANY,exchange='NSE',n_bars=5000)
-data['date'] = data.index.astype(str)
-new = data['date'].str.split(' ',expand=True)
-data['date'] = new[0]
-data['date'] = pd.to_datetime(data['date'])
-data = data.set_index('date')
+#tv = TvDatafeed()
+#data = tv.get_hist(symbol=COMPANY,exchange='NSE',n_bars=5000)
+#data['date'] = data.index.astype(str)
+#new = data['date'].str.split(' ',expand=True)
+#data['date'] = new[0]
+#data['date'] = pd.to_datetime(data['date'])
+#data = data.set_index('date')
 
-timeseriesdf = data[['close']]
-timeseriessq = data['close']
+#timeseriesdf = data[['close']]
+#timeseriessq = data['close']
 
 col1, col2 = st.beta_columns((1,1))
 
@@ -162,7 +162,7 @@ def baseplots(var):
     st.plotly_chart(fig, use_container_width = True)
 
 
-    st.subheader('Line Chart')
+    st.subheader('Line Chart for {}'.format(var))
     fig2 = plt.figure(figsize = (20,8))
     plt.plot(data.close)
     st.write(fig2)
@@ -194,7 +194,7 @@ def model(var):
                         fill_value=0)
     heatmap_y_month1 = heatmap_y_month[['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']]
 
-    st.header('Model Based Forecast Result')
+    st.header('Model Based Forecast Result for {}'.format(var))
     st.subheader('Heatmap')
     fig = plt.figure(figsize=(20,10))
     sns.heatmap(heatmap_y_month1,annot=True,fmt="g",cmap = 'YlOrBr')
@@ -353,7 +353,7 @@ def datad(var):
     Train = data1[:-test_size]
     Test = data1[-test_size:]
 
-    st.header('Data Driven Forecast Result')
+    st.header('Data Driven Forecast Result for {}'.format(var))
     st.subheader('Moving Average(MA)')
     fig = plt.figure(figsize=(20,8))
     data1['close'].plot(label="org")
@@ -429,7 +429,7 @@ def arima(var):
     from statsmodels.tsa.stattools import adfuller
     from statsmodels.tsa.stattools import kpss
 	
-    st.header('Auto ARIMA Forecast Result')
+    st.header('Auto ARIMA Forecast Result for {}'.format(var))
     st.write('**Determining stationarity of the dataset using Augmented Dickey-Fuller Test**')
 
     result=adfuller (data['close'])
@@ -560,7 +560,7 @@ def lstm(var):
     # Results
     rms=np.sqrt(np.mean(np.power((valid-closing_price),2)))
 
-    st.header('LSTM Artificial Neural Network based Forecasting')
+    st.header('LSTM Artificial Neural Network based Forecasting for {}'.format(var))
     st.subheader('Forecast by LSTM ANN')
     #for plotting
     fig = plt.figure(figsize=(25,10))
@@ -603,7 +603,7 @@ def fb(var):
     pred.trend_upper[pred.trend_upper < 0] = 0
     pred.trend_lower[pred.trend_lower < 0] = 0
 
-    st.header('Forecast by FB Prophet Model')
+    st.header('Forecast by FB Prophet Model for {}'.format(var))
     st.subheader('Predicted Result')
     st.pyplot(model.plot(pred))
     st.subheader('Other Components of FBPROPHET')
